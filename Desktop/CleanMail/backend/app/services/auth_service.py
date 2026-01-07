@@ -4,7 +4,7 @@ Authentication service - JWT token management
 
 from datetime import datetime, timedelta
 from typing import Optional
-import jwt
+from jose import jwt
 from fastapi import HTTPException, status
 
 from app import config
