@@ -12,7 +12,27 @@ from app.models.rule import Rule
 
 
 def get_emails(user: User, max_results: int = 10) -> List[Dict[str, Any]]:
-    """Fetch emails from user's Gmail inbox"""
+    """Fetch recent emails from user's Gmail inbox.
+
+    Retrieves unread emails from the inbox for processing. Automatically
+    refreshes OAuth tokens if expired.
+
+    Args:
+        user: User object with Gmail API credentials
+        max_results: Maximum number of emails to retrieve (default: 10)
+
+    Returns:
+        List of email dictionaries containing:
+        - id: Gmail message ID
+        - subject: Email subject line
+        - sender: Email sender address
+        - received_at: Email timestamp
+        - body_preview: First 200 characters of email body
+        - labels: Gmail labels applied to the email
+
+    Raises:
+        Exception: If Gmail API request fails or token refresh fails
+    """
     # Check if token is expired and refresh if needed
     if is_token_expired(user):
         refresh_access_token(user)

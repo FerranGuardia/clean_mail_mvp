@@ -1,10 +1,34 @@
 # CleanMail - Professional Gmail Inbox Cleaner
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688.svg)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB.svg)](https://reactjs.org/)
+
 Una herramienta web que ayuda a mantener tu bandeja de Gmail profesional mediante reglas basadas en patrones. Especializada en español e inglés para filtrar correos no deseados y rastrear facturas importantes.
 
 **Enfoque Principal**: Mantener el Gmail profesional eliminando "trash/publy" (promociones, social, no-reply) y asegurando que todas las facturas, pedidos y documentos importantes estén perfectamente organizados y etiquetados.
 
 **Objetivo Principal**: Nunca perder una factura importante y mantener la bandeja de entrada limpia para uso profesional.
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/cleanmail.git
+cd cleanmail
+
+# Setup development environment
+python setup.py
+
+# Configure Google OAuth (see setup instructions below)
+# Then start development servers
+python start-dev.py
+```
+
+**View the application:**
+- Landing Page: http://localhost:5173
+- API Documentation: http://localhost:8000/docs
 
 ## 🎨 **Website Design**
 
@@ -85,9 +109,14 @@ cleanmail/
 │   │   │   ├── gmail_service.py # Gmail API wrapper
 │   │   │   └── rule_engine.py   # Rule matching logic
 │   │   └── utils/               # Helper functions
+│   ├── scripts/                 # Utility scripts
+│   │   └── init_rules.py        # Initialize built-in rules
 │   ├── tests/                   # Unit tests
+│   ├── cleanmail.db             # SQLite database (development)
 │   ├── requirements.txt         # Python dependencies
-│   └── alembic/                 # Database migrations (future)
+│   ├── runtime.txt              # Python version for deployment
+│   ├── Procfile                 # Heroku deployment config
+│   └── railway.json             # Railway deployment config
 ├── frontend/
 │   ├── public/
 │   ├── src/
@@ -182,12 +211,6 @@ cleanmail/
    ```bash
    npm run dev
    ```
-
-### **View the Website**
-- **Landing Page**: http://localhost:5173 (Professional SaaS design)
-- **App Dashboard**: http://localhost:5173/app/dashboard (after login)
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
 
 ## 🔧 API Endpoints
 

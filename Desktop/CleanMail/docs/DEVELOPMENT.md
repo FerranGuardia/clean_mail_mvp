@@ -2,69 +2,125 @@
 
 ## Getting Started
 
+### Prerequisites
+
+- **Python 3.8+**: Required for FastAPI backend
+- **Node.js 16+**: Required for React frontend
+- **Git**: For version control
+- **Google Cloud Account**: For Gmail API access
+
 ### Automated Setup
-Run the setup script to configure your development environment:
+
+The easiest way to get started is using the automated setup script:
+
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/cleanmail.git
+cd cleanmail
+
+# Run automated setup
 python setup.py
 ```
 
-### Manual Setup
-If you prefer manual setup, follow these steps:
+The setup script will:
+- Create Python virtual environment
+- Install all dependencies
+- Set up basic configuration
+- Initialize SQLite database
+- Create environment variables template
 
-1. **Backend Setup:**
+### Manual Setup
+
+If you prefer manual setup:
+
+1. **Clone Repository:**
+   ```bash
+   git clone https://github.com/yourusername/cleanmail.git
+   cd cleanmail
+   ```
+
+2. **Backend Setup:**
    ```bash
    python -m venv venv
-   venv\Scripts\activate  # Windows
+   # Windows
+   venv\Scripts\activate
+   # macOS/Linux
+   source venv/bin/activate
+
    pip install -r backend/requirements.txt
    ```
 
-2. **Frontend Setup:**
+3. **Frontend Setup:**
    ```bash
    cd frontend
    npm install
+   cd ..
    ```
 
-3. **Google OAuth Setup:**
+4. **Google OAuth Setup:**
    - Visit [Google Cloud Console](https://console.cloud.google.com/)
    - Create/select a project
    - Enable Gmail API
    - Create OAuth 2.0 credentials
-   - Configure authorized redirect URI: `http://localhost:8000/api/auth/callback`
+   - Set redirect URI: `http://localhost:8000/api/auth/callback`
 
-4. **Environment Configuration:**
-   Copy `.env.example` to `.env` and fill in your credentials.
+5. **Environment Configuration:**
+   Create `backend/.env` with your credentials (see setup script output)
 
 ## Development Workflow
 
 ### Running the Application
 
-1. **Start Backend:**
-   ```bash
-   cd backend
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
+#### Option 1: Automated Development Server
+```bash
+python start-dev.py
+```
+This starts both backend and frontend servers simultaneously.
 
-2. **Start Frontend:**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
+#### Option 2: Manual Server Start
 
-3. **Access Application:**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:8000
-   - API Docs: http://localhost:8000/docs
+**Terminal 1 - Backend:**
+```bash
+cd backend
+# Activate virtual environment if not using automated setup
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
+
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend
+npm run dev
+```
+
+### Accessing the Application
+
+- **Landing Page**: http://localhost:5173
+- **App Dashboard**: http://localhost:5173/app/dashboard (after login)
+- **Backend API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
+- **API Alternative Docs**: http://localhost:8000/redoc
 
 ### Code Quality
 
 #### Backend
 ```bash
-# Format code
-black .
-isort .
+# Format code with Black
+black backend/
 
-# Run tests (when implemented)
-pytest
+# Sort imports with isort
+isort backend/
+
+# Run tests
+pytest backend/tests/
+
+# Run tests with coverage
+pytest --cov=backend/app --cov-report=html
+
+# Type checking (future)
+mypy backend/app/
 ```
 
 #### Frontend
@@ -72,8 +128,64 @@ pytest
 # Lint code
 npm run lint
 
-# Format code (when configured)
+# Format code
 npm run format
+
+# Type checking (future)
+npm run type-check
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
+```
+
+### Development Tools
+
+#### VS Code Extensions (Recommended)
+- Python (Microsoft)
+- Pylance (Microsoft)
+- Black Formatter (Microsoft)
+- isort (Microsoft)
+- Prettier (Prettier)
+- ESLint (Microsoft)
+- Auto Rename Tag (Jun Han)
+- Tailwind CSS IntelliSense (Tailwind Labs)
+
+#### Pre-commit Hooks (Future)
+Consider setting up pre-commit hooks for automatic code quality:
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+### Environment Management
+
+#### Python Virtual Environment
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate (Windows)
+venv\Scripts\activate
+
+# Activate (macOS/Linux)
+source venv/bin/activate
+
+# Deactivate
+deactivate
+```
+
+#### Node Version Management
+Consider using nvm for Node.js version management:
+```bash
+# Install nvm (Windows)
+choco install nvm
+
+# Install and use Node 18
+nvm install 18
+nvm use 18
 ```
 
 ## Architecture Overview
@@ -90,6 +202,52 @@ npm run format
 - **Pages**: Route-based page components
 - **Services**: API client and external integrations
 - **Components**: Reusable UI components
+
+### Modern Development Practices
+
+#### API Testing Tools
+```bash
+# HTTPie for command-line API testing
+pip install httpie
+http GET http://localhost:8000/health
+http POST http://localhost:8000/api/auth/me Authorization:"Bearer YOUR_TOKEN"
+
+# Or use the interactive API docs at http://localhost:8000/docs
+```
+
+#### Debugging Techniques
+
+**Backend Debugging:**
+```python
+# Add debug prints
+print(f"Debug: user_id={user_id}, rule_count={len(rules)}")
+
+# Use Python debugger
+import pdb; pdb.set_trace()
+
+# Structured logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger.info("Processing emails for user %s", user_id)
+```
+
+**Frontend Debugging:**
+- React Developer Tools browser extension
+- Browser dev tools for network inspection
+- `console.log()` for quick debugging
+- Check React component state with DevTools
+
+#### Performance Monitoring
+
+**Backend:**
+- Use `/health` endpoint for basic monitoring
+- Monitor API response times
+- Check database query performance with SQLAlchemy logging
+
+**Frontend:**
+- Browser dev tools performance tab
+- Bundle analyzer: `npm run build && npx vite-bundle-analyzer dist/assets/*.js`
+- React DevTools Profiler for component performance
 
 ## Database Management
 
